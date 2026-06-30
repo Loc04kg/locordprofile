@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Locord | Profile</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Press+Start+2P&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="background-elements">
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+        <div class="star-container"></div>
+    </div>
+
+    <div class="profile-card">
+        <div class="card-inner">
+            <!-- Profile Background Video (Zoro Green Flames) -->
+            <video class="profile-bg-video" autoplay loop muted playsinline>
+                <source src="zoro.mp4" type="video/mp4">
+            </video>
+
+            <div class="avatar-container snake-avatar">
+                <img src="avatar.png" alt="Locord Avatar" class="avatar">
+
+                <!-- SVG Snake Frame (Giữ lại hoặc xóa tùy ý) -->
+                <svg class="snake-svg" viewBox="0 0 140 140">
+                    <path class="snake" d="M 70 4 A 66 66 0 1 1 69.9 4" fill="none" stroke="#2ecc71" stroke-width="6"
+                        stroke-linecap="round" filter="drop-shadow(0 0 6px #2ecc71)" />
+                </svg>
+
+                <div class="status-indicator"></div>
+            </div>
+
+            <h1 class="name">Locord</h1>
+            <p class="title">Huỳnh Văn Lộc</p>
+
+            <div class="bio">
+                <p class="work-title"><i class="fa-solid fa-code"></i> My work: <span>Vibecode</span></p>
+
+                <div class="riot-games-section">
+                    <div class="riot-header cyber-tooltip" data-tooltip="Locord#2004">
+                        <img src="https://cdn.simpleicons.org/riotgames/2ecc71" alt="Riot Games" class="riot-icon">
+                        <span>Riot Games Profile</span>
+                    </div>
+                    <div class="game-stat cyber-tooltip" data-tooltip="Locord#2004">
+                        <img src="https://cdn.simpleicons.org/valorant/2ecc71" alt="Valorant" class="game-icon">
+                        <span class="game-name">Valorant</span>
+                        <span class="rank-gold">Gold 2</span>
+                    </div>
+                    <div class="game-stat cyber-tooltip" data-tooltip="Locord#2004">
+                        <img src="https://cdn.simpleicons.org/leagueoflegends/2ecc71" alt="League of Legends"
+                            class="game-icon">
+                        <span class="game-name">League of Legends</span>
+                        <span class="rank-bronze">Bronze 3</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="social-links">
+                <a href="https://www.facebook.com/huynh.loc.958979/" class="social-btn" aria-label="Facebook"><i
+                        class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" class="social-btn cyber-tooltip" data-tooltip="locord" aria-label="Discord"><i
+                        class="fa-brands fa-discord"></i></a>
+                <a href="#" class="social-btn cyber-tooltip" data-tooltip="@locord.2004" aria-label="Instagram"><i
+                        class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="social-btn" aria-label="Github"><i class="fa-brands fa-github"></i></a>
+                <a href="https://www.youtube.com/@huynhvanloc9357" class="social-btn" aria-label="Youtube"><i
+                        class="fa-brands fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+    <!-- Music Player Widget -->
+    <div class="music-player paused">
+        <audio id="bgm"></audio>
+        
+        <div class="music-controls">
+            <button id="music-prev-btn" class="music-btn-small" aria-label="Previous">
+                <i class="fa-solid fa-backward-step"></i>
+            </button>
+            <button id="music-play-btn" class="music-btn" aria-label="Play/Pause">
+                <i class="fa-solid fa-play"></i>
+            </button>
+            <button id="music-next-btn" class="music-btn-small" aria-label="Next">
+                <i class="fa-solid fa-forward-step"></i>
+            </button>
+        </div>
+
+        <div class="music-info">
+            <div class="music-header">
+                <div class="music-title">Cyberpunk Vibe</div>
+                <div class="equalizer">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+            <div class="music-footer">
+                <div class="progress-container" id="music-progress-container">
+                    <div class="progress-bar" id="music-progress-bar"></div>
+                </div>
+                
+                <div class="volume-control">
+                    <i class="fa-solid fa-volume-low" id="volume-icon"></i>
+                    <input type="range" id="volume-slider" class="volume-slider" min="0" max="1" step="0.01" value="0.5" aria-label="Volume">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Cursor particles base (SVG cursor in CSS) -->
+
+    <script src="script.js"></script>
+</body>
+
+</html>
