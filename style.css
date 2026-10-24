@@ -1,0 +1,928 @@
+:root {
+    --bg-gradient-start: #050505;
+    --bg-gradient-end: #0f4a27;
+    --accent-color: #2ecc71;
+    --accent-hover: #27ae60;
+    --text-primary: #ffffff;
+    --text-secondary: #a3b8ad;
+    --glass-bg: rgba(10, 46, 29, 0.4);
+    --glass-border: rgba(46, 204, 113, 0.2);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom, #000000 0%, var(--bg-gradient-start) 20%, var(--bg-gradient-end) 100%); /* Làm phía trên đỉnh đen tuyền */
+    color: var(--text-primary);
+    overflow: hidden;
+    position: relative;
+    /* Mũi tên trắng, viền xanh lá (Nhỏ gọn) */
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"><polygon points="2,2 2,19 7,14 16,14" fill="%23ffffff" stroke="%232ecc71" stroke-width="2" stroke-linejoin="round"/></svg>'), auto;
+}
+
+/* Các thành phần có thể click: Đảo ngược màu thành Xanh, viền Trắng */
+a, button, .music-player, .music-player:hover, .cyber-tooltip, .social-btn, .game-stat, .riot-header, .music-controls, .music-btn, .music-btn-small, .progress-container, .volume-slider {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"><polygon points="2,2 2,19 7,14 16,14" fill="%232ecc71" stroke="%23ffffff" stroke-width="2" stroke-linejoin="round"/></svg>'), pointer !important;
+}
+
+/* Animated Background Elements */
+.background-elements {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.5;
+    animation: float 20s infinite ease-in-out alternate;
+}
+
+.circle-1 {
+    width: 400px;
+    height: 400px;
+    background: #185a3a;
+    top: -10%;
+    left: -10%;
+    animation-delay: 0s;
+}
+
+.circle-2 {
+    width: 300px;
+    height: 300px;
+    background: #0f4028;
+    bottom: -5%;
+    right: -5%;
+    animation-delay: -5s;
+}
+
+.circle-3 {
+    width: 250px;
+    height: 250px;
+    background: #2ecc71;
+    opacity: 0.15;
+    top: 40%;
+    left: 60%;
+    animation-delay: -10s;
+}
+
+@keyframes float {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+    50% {
+        transform: translate(50px, 30px) scale(1.1);
+    }
+    100% {
+        transform: translate(-30px, 50px) scale(0.9);
+    }
+}
+
+/* Profile Card - Glassmorphism */
+.profile-card {
+    position: relative;
+    z-index: 10;
+    width: 90%;
+    max-width: 420px;
+    border-radius: 24px;
+    padding: 2px; /* For gradient border effect */
+    background: linear-gradient(135deg, rgba(46, 204, 113, 0.4), rgba(46, 204, 113, 0.05));
+    box-shadow: var(--glass-shadow);
+    transform: translateY(30px);
+    opacity: 0;
+    animation: slideUpFade 1s 0.2s forwards cubic-bezier(0.16, 1, 0.3, 1);
+    transform-style: preserve-3d;
+}
+
+.card-inner {
+    background: rgba(10, 46, 29, 0.7); /* Tăng độ đậm để chữ dễ đọc hơn khi có video nền */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 22px;
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transform: translateZ(10px);
+    position: relative;
+    overflow: hidden; /* Giữ video nằm gọn bên trong thẻ */
+}
+
+.profile-bg-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.3; /* Độ mờ vừa phải (30%) để vẫn thấy rõ video ngọn lửa */
+    pointer-events: none;
+    mix-blend-mode: screen;
+    filter: brightness(0.8); /* Hơi giảm độ sáng một chút xíu, bỏ làm nhòe (blur) */
+}
+
+@keyframes slideUpFade {
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Avatar */
+.avatar-container {
+    position: relative;
+    margin-bottom: 25px;
+    width: 140px;
+    height: 140px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateZ(30px);
+}
+
+.snake-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 4;
+    pointer-events: none;
+}
+
+.avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    z-index: 3;
+    position: relative;
+    border: 2px solid rgba(46, 204, 113, 0.2);
+    padding: 0;
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.profile-card:hover .avatar {
+    transform: scale(1.05) rotate(2deg);
+}
+
+.status-indicator {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    background-color: var(--accent-color);
+    border-radius: 50%;
+    border: 3px solid #050505;
+    box-shadow: 0 0 10px rgba(46, 204, 113, 0.6);
+    animation: pulse 2s infinite;
+    z-index: 4;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(46, 204, 113, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
+    }
+}
+
+/* Typography */
+.name {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin-bottom: 10px;
+    color: #ffffff;
+    letter-spacing: 2px;
+    transform: translateZ(20px);
+    text-shadow: 
+        0 0 5px #fff,
+        0 0 10px #2ecc71,
+        0 0 20px #2ecc71,
+        0 0 40px #2ecc71,
+        0 0 80px #0f4a27;
+    transition: text-shadow 0.05s, color 0.05s;
+}
+
+/* Javascript toggles this class for the flicker effect */
+.name.flicker-off {
+    text-shadow: none;
+    color: #1a4f32;
+}
+
+.title {
+    font-size: 1rem;
+    color: var(--accent-color);
+    font-weight: 600;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+    transform: translateZ(20px);
+}
+
+.bio {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 30px;
+    transform: translateZ(10px);
+}
+
+.work-title {
+    margin-bottom: 10px;
+}
+
+.work-title span {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+/* Riot Games Profile Section */
+.riot-games-section {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(46, 204, 113, 0.3);
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: inset 0 0 10px rgba(46, 204, 113, 0.1);
+}
+
+.riot-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
+    color: var(--accent-color);
+    font-family: 'Press Start 2P', monospace; /* Cyberpunk pixel font */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+    border-bottom: 1px dashed rgba(46, 204, 113, 0.4);
+    padding-bottom: 8px;
+    text-decoration: none;
+}
+
+a.riot-header:hover,
+a.game-stat:hover {
+    opacity: 0.85;
+}
+
+.riot-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.game-stat {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.95rem;
+    text-decoration: none;
+    color: inherit;
+}
+
+.game-icon {
+    width: 20px;
+    height: 20px;
+    filter: drop-shadow(0 0 4px var(--accent-color));
+}
+
+.game-name {
+    flex-grow: 1;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.rank-gold {
+    color: #ffd700;
+    font-weight: 800;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+}
+
+.rank-bronze {
+    color: #cd7f32;
+    font-weight: 800;
+    text-shadow: 0 0 8px rgba(205, 127, 50, 0.6);
+}
+
+.rank-iron { color: #5a5a5a; font-weight: 800; text-shadow: 0 0 8px rgba(90,90,90,0.6); }
+.rank-silver { color: #c0c0c0; font-weight: 800; text-shadow: 0 0 8px rgba(192,192,192,0.6); }
+.rank-platinum { color: #00d4ff; font-weight: 800; text-shadow: 0 0 8px rgba(0,212,255,0.6); }
+.rank-diamond { color: #b9f2ff; font-weight: 800; text-shadow: 0 0 8px rgba(185,242,255,0.6); }
+.rank-ascendant { color: #3effa8; font-weight: 800; text-shadow: 0 0 8px rgba(62,255,168,0.6); }
+.rank-immortal { color: #ff4655; font-weight: 800; text-shadow: 0 0 8px rgba(255,70,85,0.6); }
+.rank-radiant { color: #ffff99; font-weight: 800; text-shadow: 0 0 10px rgba(255,255,153,0.8); }
+.rank-unrated { color: #888; font-weight: 800; }
+
+/* Social Links */
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    transform: translateZ(20px);
+}
+
+.social-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.social-btn:hover {
+    background: var(--accent-color);
+    color: #000;
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+    border-color: var(--accent-color);
+}
+
+/* Generic Cyberpunk Tooltip (ID Hover) */
+.cyber-tooltip {
+    position: relative;
+    cursor: pointer;
+}
+
+.cyber-tooltip::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 150%; /* Nâng cao hơn để nhường chỗ cho tia laser xéo */
+    left: 30px; /* Lệch sang phải so với gốc laser */
+    transform: translateY(15px);
+    background: rgba(5, 15, 25, 0.9);
+    backdrop-filter: blur(5px);
+    color: var(--accent-color);
+    padding: 10px 15px;
+    font-size: 0.7rem;
+    font-family: 'Press Start 2P', monospace; /* Font chữ điện tử/Pixel */
+    letter-spacing: 2px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+    border-left: 2px solid var(--accent-color);
+    border-right: 2px solid var(--accent-color);
+    box-shadow: 0 0 20px rgba(46, 204, 113, 0.6);
+    text-shadow: 0 0 8px var(--accent-color);
+    text-transform: uppercase;
+    
+    pointer-events: none;
+    z-index: 100;
+}
+
+/* Tia Laser chéo từ trái lên */
+.cyber-tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: 110%; 
+    left: 15px; /* Điểm gốc tia laser ở bên trái */
+    transform-origin: bottom center;
+    transform: translateY(10px) rotate(45deg); /* Góc xéo 45 độ đưa lên phải */
+    width: 2px;
+    height: 35px; /* Dài hơn để nối tới tooltip bị lệch */
+    background: var(--accent-color);
+    box-shadow: 0 0 8px var(--accent-color), 0 0 15px var(--accent-color);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    z-index: 99;
+}
+
+.cyber-tooltip:hover::before {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    animation: cyber-glitch 0.3s ease forwards;
+}
+
+.cyber-tooltip:hover::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) rotate(45deg);
+}
+
+/* Hiệu ứng chớp giật (Glitch) nhẹ khi vừa hiển thị */
+@keyframes cyber-glitch {
+    0% { filter: hue-rotate(90deg) brightness(1.5); transform: translateY(5px); }
+    50% { filter: hue-rotate(-90deg) brightness(0.5); transform: translateY(-2px); }
+    100% { filter: hue-rotate(0deg) brightness(1); transform: translateY(0); }
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    transform: translateZ(30px);
+}
+
+.btn {
+    flex: 1;
+    padding: 12px 0;
+    border-radius: 12px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-primary {
+    background: var(--accent-color);
+    color: #000;
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+}
+
+.btn-primary:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(46, 204, 113, 0.4);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+
+/* Electric Sparks Effect (For Locord Text) */
+.sparkle {
+    position: fixed;
+    background-color: #e0ffeb; /* Bright white-green */
+    pointer-events: none;
+    z-index: 9997;
+    border-radius: 2px;
+    box-shadow: 0 0 8px #2ecc71, 0 0 15px #2ecc71;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes sparkle-fall {
+    0% {
+        transform: translate(-50%, -50%) translateY(0) scaleY(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) translateY(150px) scaleY(0);
+        opacity: 0;
+    }
+}
+
+/* Cursor Bling Bling Sparkles (White & Green) */
+.cursor-sparkle {
+    position: fixed;
+    background-color: #ffffff; /* Lõi màu trắng */
+    pointer-events: none;
+    z-index: 9997;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); /* Hình thoi kim cương */
+    filter: drop-shadow(0 0 4px #2ecc71) drop-shadow(0 0 10px #2ecc71); /* Hào quang xanh lá */
+    transform: translate(-50%, -50%);
+}
+
+@keyframes cursor-sparkle-fall {
+    0% {
+        transform: translate(-50%, -50%) translateY(0) scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) translateY(80px) scale(0) rotate(180deg);
+        opacity: 0;
+    }
+}
+
+/* Star Constellation Effect */
+.star-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.static-star {
+    position: absolute;
+    background-color: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 0 3px #ffffff, 0 0 6px rgba(46, 204, 113, 0.5);
+    animation: twinkle infinite alternate ease-in-out;
+}
+
+@keyframes twinkle {
+    0% { opacity: 0.2; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1.2); }
+}
+
+.falling-star {
+    position: absolute;
+    width: 150px;
+    height: 2px;
+    background: linear-gradient(to right, transparent, rgba(46, 204, 113, 0.4), #ffffff);
+    border-radius: 50%;
+    animation: shooting-star linear forwards;
+    opacity: 0;
+    filter: drop-shadow(0 0 6px #ffffff);
+}
+
+@keyframes shooting-star {
+    0% {
+        transform: rotate(135deg) translateX(0);
+        opacity: 1;
+    }
+    100% {
+        transform: rotate(135deg) translateX(150vh); /* Bay thẳng thắp theo trục chéo 135 độ */
+        opacity: 0;
+    }
+}
+
+/* -------------------------------------
+   Music Player Widget (Góc Trái Dưới)
+------------------------------------- */
+.music-player {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    background: rgba(5, 15, 25, 0.75);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(46, 204, 113, 0.4);
+    border-radius: 50px;
+    padding: 8px 15px 8px 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 1000;
+    box-shadow: 0 0 15px rgba(0,0,0,0.6), inset 0 0 10px rgba(46, 204, 113, 0.1);
+    transition: all 0.3s ease;
+}
+
+.music-player:hover {
+    box-shadow: 0 0 20px rgba(46, 204, 113, 0.3), inset 0 0 10px rgba(46, 204, 113, 0.2);
+    border-color: var(--accent-color);
+}
+.music-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.music-btn-small {
+    background: transparent;
+    color: var(--text-secondary);
+    border: none;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.music-btn-small:hover {
+    color: var(--accent-color);
+    transform: scale(1.1);
+    text-shadow: 0 0 5px var(--accent-color);
+}
+.music-btn {
+    background: var(--accent-color);
+    color: #000;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
+    outline: none;
+}
+
+.music-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px var(--accent-color);
+}
+
+/* Khi đang play thì nút có hiệu ứng rung nhẹ (pulse) */
+.music-player:not(.paused) .music-btn {
+    animation: music-pulse 2s infinite;
+}
+
+@keyframes music-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(46, 204, 113, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+}
+
+.music-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    /* Loại bỏ pointer-events: none để có thể click thanh tiến trình */
+}
+
+.music-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.music-title {
+    font-size: 0.7rem;
+    color: var(--text-primary);
+    font-family: 'Press Start 2P', monospace;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    pointer-events: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 120px;
+    transition: max-width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Khi di chuột vào trình phát, giãn rộng tên bài hát */
+.music-player:hover .music-title {
+    max-width: 350px;
+}
+
+/* Hiệu ứng thanh Equalizer (Sóng nhạc) */
+.equalizer {
+    display: flex;
+    gap: 3px;
+    height: 10px;
+    align-items: flex-end;
+}
+
+.equalizer .bar {
+    width: 3px;
+    background: var(--accent-color);
+    border-radius: 2px;
+    animation: eq-bounce 1s infinite ease-in-out;
+    box-shadow: 0 0 5px var(--accent-color);
+}
+
+.equalizer .bar:nth-child(1) { height: 10px; animation-delay: 0.1s; }
+.equalizer .bar:nth-child(2) { height: 6px; animation-delay: 0.3s; }
+.equalizer .bar:nth-child(3) { height: 8px; animation-delay: 0.2s; }
+.equalizer .bar:nth-child(4) { height: 10px; animation-delay: 0.4s; }
+
+/* Trạng thái Pause: Dừng sóng nhạc, thu nhỏ về 1 nét ngang */
+.music-player.paused .equalizer .bar {
+    animation: none;
+    transform: scaleY(0.2);
+    box-shadow: none;
+    background: var(--text-secondary);
+}
+
+@keyframes eq-bounce {
+    0%, 100% { transform: scaleY(0.4); }
+    50% { transform: scaleY(1); }
+}
+
+/* Thanh tiến trình */
+.progress-container {
+    width: 150px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 0 3px rgba(0,0,0,0.5);
+    transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Khi di chuột vào trình phát, giãn rộng thanh tiến trình cho cân đối */
+.music-player:hover .progress-container {
+    width: 250px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--accent-color);
+    border-radius: 3px;
+    box-shadow: 0 0 8px var(--accent-color);
+    /* Bỏ transition vì nó chạy liên tục với timeupdate */
+}
+
+/* Trạng thái Pause: Tắt hiệu ứng sáng của thanh tiến trình */
+.music-player.paused .progress-bar {
+    box-shadow: none;
+    background: rgba(46, 204, 113, 0.5);
+}
+
+/* Footer chứa thanh tiến trình và âm lượng */
+.music-footer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Volume Control */
+.volume-control {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+}
+
+.volume-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 0; /* Ẩn đi khi không hover */
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    outline: none;
+    transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+    opacity: 0;
+    pointer-events: none; /* Tránh click nhầm khi đang ẩn */
+}
+
+/* Khi hover vào music player, hiện thanh volume */
+.music-player:hover .volume-slider {
+    width: 50px;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent-color);
+    cursor: pointer;
+    box-shadow: 0 0 5px var(--accent-color);
+}
+
+/* ========== Vote Gate Modal ========== */
+.vote-gate {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(12px);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.vote-box {
+    background: rgba(10, 40, 25, 0.95);
+    border: 2px solid var(--accent-color);
+    border-radius: 16px;
+    padding: 30px 25px;
+    text-align: center;
+    max-width: 340px;
+    width: 100%;
+    box-shadow: 0 0 30px rgba(46, 204, 113, 0.3);
+    animation: votePop 0.4s ease;
+}
+
+@keyframes votePop {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.vote-question {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #fff;
+}
+
+.vote-sub {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--accent-color);
+    margin-bottom: 25px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.75rem;
+    line-height: 1.6;
+}
+
+.vote-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.vote-btn {
+    flex: 1;
+    padding: 14px 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Outfit', sans-serif;
+}
+
+.vote-btn.yes {
+    background: var(--accent-color);
+    color: #000;
+}
+
+.vote-btn.yes:hover {
+    background: #27ae60;
+    transform: scale(1.05);
+}
+
+.vote-btn.no {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.vote-btn.no:hover {
+    background: rgba(255, 80, 80, 0.3);
+    border-color: #ff5050;
+}
+
+/* Live result small badge */
+.vote-result {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(46, 204, 113, 0.4);
+    color: var(--accent-color);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 20px;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+    pointer-events: none;
+    animation: fadeInResult 0.5s ease;
+}
+
+@keyframes fadeInResult {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 480px) {
+    .vote-result {
+        bottom: 90px; /* tránh đè music player */
+        left: 12px;
+        font-size: 0.7rem;
+        padding: 6px 12px;
+    }
+}
