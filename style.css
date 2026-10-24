@@ -791,3 +791,29 @@ a, button, .music-player, .music-player:hover, .cyber-tooltip, .social-btn, .gam
     cursor: pointer;
     box-shadow: 0 0 5px var(--accent-color);
 }
+/* Thêm vào phần Riot Games Profile Section */
+.riot-header {
+    /* ... giữ nguyên style cũ ... */
+    text-decoration: none;
+}
+
+a.riot-header:hover,
+a.game-stat:hover {
+    opacity: 0.85;
+}
+
+.game-stat {
+    /* ... giữ nguyên style cũ ... */
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Rank colors */
+.rank-iron { color: #5a5a5a; font-weight: 800; text-shadow: 0 0 8px rgba(90,90,90,0.6); }
+.rank-silver { color: #c0c0c0; font-weight: 800; text-shadow: 0 0 8px rgba(192,192,192,0.6); }
+.rank-platinum { color: #00d4ff; font-weight: 800; text-shadow: 0 0 8px rgba(0,212,255,0.6); }
+.rank-diamond { color: #b9f2ff; font-weight: 800; text-shadow: 0 0 8px rgba(185,242,255,0.6); }
+.rank-ascendant { color: #3effa8; font-weight: 800; text-shadow: 0 0 8px rgba(62,255,168,0.6); }
+.rank-immortal { color: #ff4655; font-weight: 800; text-shadow: 0 0 8px rgba(255,70,85,0.6); }
+.rank-radiant { color: #ffff99; font-weight: 800; text-shadow: 0 0 10px rgba(255,255,153,0.8); }
+.rank-unrated { color: #888; font-weight: 800; }
