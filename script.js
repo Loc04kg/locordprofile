@@ -352,3 +352,56 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+// --- Auto-update Valorant Rank via HenrikDev API ---
+    const VALORANT_NAME = 'Locord';
+    const VALORANT_TAG = '2004';
+    const VALORANT_REGION = 'ap';
+    const HENRIK_API_KEY = 'HDEV-dc0f73e5-4f8f-44e3-9861-d6114d1c7aeb';
+
+    async function updateValorantRank() {
+        const rankEl = document.getElementById('valorant-rank');
+        if (!rankEl) return;
+
+        try {
+            const url = `https://api.henrikdev.xyz/valorant/v3/mmr/${VALORANT_REGION}/pc/${encodeURIComponent(VALORANT_NAME)}/${encodeURIComponent(VALORANT_TAG)}`;
+            const res = await fetch(url, {
+                headers: {
+                    'Authorization': HENRIK_API_KEY
+                }
+            });
+
+            if (!res.ok) throw new Error(`API error ${res.status}`);
+
+            const json = await res.json();
+            const current = json?.data?.current;
+
+            if (current && current.tier) {
+                const tierName = current.tier.name || 'Unrated';
+                const rr = current.rr != null ? ` ${current.rr}RR` : '';
+                rankEl.textContent = `${tierName}${rr}`;
+
+                // Cập nhật class màu theo rank
+                rankEl.className = '';
+                const lower = tierName.toLowerCase();
+                if (lower.includes('iron')) rankEl.classList.add('rank-iron');
+                else if (lower.includes('bronze')) rankEl.classList.add('rank-bronze');
+                else if (lower.includes('silver')) rankEl.classList.add('rank-silver');
+                else if (lower.includes('gold')) rankEl.classList.add('rank-gold');
+                else if (lower.includes('platinum')) rankEl.classList.add('rank-platinum');
+                else if (lower.includes('diamond')) rankEl.classList.add('rank-diamond');
+                else if (lower.includes('ascendant')) rankEl.classList.add('rank-ascendant');
+                else if (lower.includes('immortal')) rankEl.classList.add('rank-immortal');
+                else if (lower.includes('radiant')) rankEl.classList.add('rank-radiant');
+                else rankEl.classList.add('rank-unrated');
+            } else {
+                rankEl.textContent = 'Unrated';
+                rankEl.classList.add('rank-unrated');
+            }
+        } catch (err) {
+            console.error('Failed to fetch Valorant rank:', err);
+            rankEl.textContent = 'Gold 3'; // fallback
+            rankEl.classList.add('rank-gold');
+        }
+    }
+
+    updateValorantRank();
